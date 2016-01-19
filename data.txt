@@ -1,0 +1,21 @@
+hello:heya, @user
+
+
+how are you: i am fine
+
+!about:I'm a Python bot programmed to do bot things
+
+doot:beep
+
+
+beep:boop
+
+
+!help:ain't nothing you need to know 'bout making me. I'll just interject as and when ya say something.
+
+
+!hug:*wraps her hooves around @user in a tight hug*
+
+
+!jump:*jumps up*
+
