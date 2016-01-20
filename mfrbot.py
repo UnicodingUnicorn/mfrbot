@@ -1,5 +1,6 @@
 import discord
 import sched, time
+import user_functions
 
 email = "mfr.discordbot@gmail.com"
 password = "silverleaf"
@@ -18,10 +19,25 @@ def read_data():
 @client.event
 def on_message(message):
     if message.author.id != client.user.id:
-	if message.content == "!responses":
-		client.send_message(message.channel, "Listing all my responses:")
-		for key in data:
-			client.send_message(message.channel, key + " - " + data[key])
+        if message.content[0] == "!":
+            try:
+                getattr(user_functions, message.content[1:])(client, message)
+            except AttributeError:
+                for key in data:
+                    if message.content.startswith(key):
+                        string = data[key]
+                        send_string = ""
+                        for word in string.split():
+                            if word == "@user":
+                                send_string += message.author.mention() + " "
+                            else:
+                                send_string += word + " "
+                        client.send_message(message.channel, send_string)
+                        break
+	#if message.content == "!responses":
+	#	client.send_message(message.channel, "Listing all my responses:")
+	#	for key in data:
+	#		client.send_message(message.channel, key + " - " + data[key])
 	else:
 	        for key in data:
         	    if message.content.startswith(key):
@@ -39,10 +55,10 @@ def on_message(message):
 #    send_string = "Welcome " + member.mention() + ", welcome to " + member.server.name + "!"
 #    for channel in member.server.channels:
 #        client.send_message(channel, send_string)
-@client.event
-def on_message_delete(message):
-        send_string = "Psst! " + message.author.name + "  said \"" + message.content + "\" at " + str(message.timestamp) + " but regretted it."
-        client.send_message(message.channel, send_string)
+#@client.event
+#def on_message_delete(message):
+#       send_string = "Psst! " + message.author.name + "  said \"" + message.content + "\" at " + str(message.timestamp) + " but regretted it."
+#        client.send_message(message.channel, send_string)
 @client.event
 def on_member_remove(member):
 	client.send_message(member, client.create_invite(member.server).url)
